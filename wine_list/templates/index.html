@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div id="cellar" name="cellar" class="text-center">
+        {% if wines %}
+            {% for wine in wines %}
+                {{ wine }}
+            {% endfor %}
+        {% else %}
+            <div style="height: 60px;"></div>
+            <span>The cellar is empty.  Add a wine <a href="#" onclick="wineForm()">here</a>.</span>
+        {% endif %}
+    </div>
+    <div id="add" name="add" class="mt-3 p-4" style="display: none; background-color: #F8F9FA;">
+        <form class="row g-3 mx-4">
+            <div class="col-md-4">
+                <label for="quantityDataList" class="form-label">Quantity</label>
+                <input class="form-control" list="quantityOptions" id="quantityDataList" placeholder="Quantity">
+                <datalist id="quantityOptions"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label for="vintageDataList" class="form-label">Vintage</label>
+                <input class="form-control" list="vintageOptions" id="vintageDataList" placeholder="Vintage (ex. - 2009)">
+                <datalist id="vintageOptions"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label for="sizeDataList" class="form-label">Bottle Size</label>
+                <input class="form-control" list="sizeOptions" id="sizeDataList" placeholder="375mL, 750mL, 1.5L, Other">
+                <datalist id="sizeOptions">
+                    <option value="375mL"></option>
+                    <option value="750mL"></option>
+                    <option value="1.5L"></option>
+                    <option value="Other"></option>
+                </datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="categoryDataList" class="form-label">Category</label>
+                <input class="form-control" list="categoryOptions" id="categoryDataList" placeholder="Red, White, etc.">
+                <datalist id="categoryOptions">
+                    <option value="Red"></option>
+                    <option value="White"></option>
+                    <option value="Sparkling"></option>
+                    <option value="Dessert"></option>
+                    <option value="Other"></option>
+                </datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="varietalDataList" class="form-label">Varietal</label>
+                <input class="form-control" list="varietalOptions" id="varietalDataList" placeholder="Malbec, Grenache, Bordeaux Red Blend">
+                <datalist id="varietalOptions"></datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="nameDataList" class="form-label">Name</label>
+                <input class="form-control" list="nameOptions" id="nameDataList" placeholder="Monte Bello, Chateaux Pontet-Canet">
+                <datalist id="nameOptions"></datalist>
+            </div>
+            <div class="col-md-6">
+                <label for="producerDataList" class="form-label">Producer</label>
+                <input class="form-control" list="producerOptions" id="producerDataList" placeholder="Lopez de Heredia, Ridge">
+                <datalist id="producerOptions"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label for="subregionDataList" class="form-label">Subregion</label>
+                <input class="form-control" list="subregionOptions" id="subregionDataList" placeholder="Oakville, Cote d'Or, Pauillac">
+                <datalist id="subregionOptions"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label for="regionDataList" class="form-label">Region</label>
+                <input class="form-control" list="regionOptions" id="regionDataList" placeholder="Napa Valley, Burgundy, Bordeaux">
+                <datalist id="regionOptions"></datalist>
+            </div>
+            <div class="col-md-4">
+                <label for="regionDataList" class="form-label">State/Country</label>
+                <input class="form-control" list="regionOptions" id="countryDataList" placeholder="France, California, Washington, Spain">
+                <datalist id="regionOptions"></datalist>
+            </div>
+            <div class="col-12">
+                <label for="rowDataList" class="form-label">Row</label>
+                <input class="form-control w-25" list="rowOptions" id="rowDataList" placeholder="Row">
+                <datalist id="rowOptions"></datalist>
+            </div>
+            <div class="col-12">
+                <label for="positionDataList" class="form-label">Position</label>
+                <input class="form-control w-25" list="positionOptions" id="positionDataList" placeholder="Front, Back, Both">
+                <datalist id="positionOptions">
+                    <option value="Front"></option>
+                    <option value="Back"></option>
+                    <option value="Both"></option>
+                </datalist>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-outline-success" type="submit" onclick="addWine()">Add</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
