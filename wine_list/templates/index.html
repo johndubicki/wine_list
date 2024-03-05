@@ -131,14 +131,14 @@
             <div class="col-6">
                 <row>
                     <div class="col-4">
-                        <label for="rowDataList" class="form-label">Window</label>
-                        <input class="form-control w-50" list="rowOptions" id="rowDataList" placeholder="Start">
+                        <label for="startDataList" class="form-label">Window</label>
+                        <input class="form-control w-50" list="rowOptions" id="startDataList" placeholder="Start">
                         <datalist id="rowOptions"></datalist>
                     </div>
                     <div class="col-4">-</div>
                     <div class="col-4">
-                        <label for="rowDataList" class="form-label"></label>
-                        <input class="form-control w-50" list="rowOptions" id="rowDataList" placeholder="End">
+                        <label for="endDataList" class="form-label"></label>
+                        <input class="form-control w-50" list="rowOptions" id="endDataList" placeholder="End">
                         <datalist id="rowOptions"></datalist>
                     </div>
                 </row>
@@ -170,84 +170,60 @@
                 <input class="form-control" id="quantity">
             </div>
             <div class="col-md-4">
-                <label for="vintageDataList" class="form-label">Vintage</label>
-                <input class="form-control" list="vintageOptions" id="vintageDataList">
-                <datalist id="vintageOptions"></datalist>
+                <label for="vintage" class="form-label">Vintage</label>
+                <input class="form-control" id="vintage">
             </div>
             <div class="col-md-4">
-                <label for="sizeDataList" class="form-label">Bottle Size</label>
-                <input class="form-control" list="sizeOptions" id="sizeDataList">
-                <datalist id="sizeOptions">
-                    <option value="375mL"></option>
-                    <option value="750mL"></option>
-                    <option value="1.5L"></option>
-                    <option value="Other"></option>
-                </datalist>
+                <label for="size" class="form-label">Bottle Size</label>
+                <input class="form-control" id="size">
             </div>
             <div class="col-md-6">
-                <label for="categoryDataList" class="form-label">Category</label>
-                <input class="form-control" list="categoryOptions" id="categoryDataList">
-                <datalist id="categoryOptions">
-                    <option value="Red"></option>
-                    <option value="White"></option>
-                    <option value="Sparkling"></option>
-                    <option value="Dessert"></option>
-                    <option value="Other"></option>
-                </datalist>
+                <label for="category" class="form-label">Category</label>
+                <input class="form-control" id="category">
             </div>
             <div class="col-md-6">
-                <label for="varietalDataList" class="form-label">Varietal</label>
-                <input class="form-control" list="varietalOptions" id="varietalDataList">
-                <datalist id="varietalOptions"></datalist>
+                <label for="varietal" class="form-label">Varietal</label>
+                <input class="form-control" id="varietal">
             </div>
             <div class="col-md-6">
-                <label for="nameDataList" class="form-label">Name</label>
-                <input class="form-control" list="nameOptions" id="nameDataList">
-                <datalist id="nameOptions"></datalist>
+                <label for="name" class="form-label">Name</label>
+                <input class="form-control" id="name">
             </div>
             <div class="col-md-6">
-                <label for="producerDataList" class="form-label">Producer</label>
-                <input class="form-control" list="producerOptions" id="producerDataList">
-                <datalist id="producerOptions"></datalist>
+                <label for="producer" class="form-label">Producer</label>
+                <input class="form-control" id="producer">
             </div>
             <div class="col-md-4">
-                <label for="subregionDataList" class="form-label">Subregion</label>
-                <input class="form-control" list="subregionOptions" id="subregionDataList">
-                <datalist id="subregionOptions"></datalist>
+                <label for="subregion" class="form-label">Subregion</label>
+                <input class="form-control" id="subregion">
             </div>
             <div class="col-md-4">
-                <label for="regionDataList" class="form-label">Region</label>
-                <input class="form-control" list="regionOptions" id="regionDataList">
-                <datalist id="regionOptions"></datalist>
+                <label for="region" class="form-label">Region</label>
+                <input class="form-control" id="region">
             </div>
             <div class="col-md-4">
-                <label for="regionDataList" class="form-label">State/Country</label>
-                <input class="form-control" list="regionOptions" id="countryDataList">
-                <datalist id="regionOptions"></datalist>
+                <label for="region" class="form-label">State/Country</label>
+                <input class="form-control" id="country">
             </div>
             <div class="col-6">
                 <row>
                     <div class="col-4">
-                        <label for="rowDataList" class="form-label">Window</label>
-                        <input class="form-control w-50" list="rowOptions" id="rowDataList">
-                        <datalist id="rowOptions"></datalist>
+                        <label for="start" class="form-label">Window</label>
+                        <input class="form-control w-50" id="start">
                     </div>
                     <div class="col-4">-</div>
                     <div class="col-4">
-                        <label for="rowDataList" class="form-label"></label>
-                        <input class="form-control w-50" list="rowOptions" id="rowDataList">
-                        <datalist id="rowOptions"></datalist>
+                        <input class="form-control w-50" id="end">
                     </div>
                 </row>
             </div>
             <div class="col-12">
-                <label for="rowDataList" class="form-label">Row</label>
-                <input class="form-control w-25" list="rowOptions" id="rowDataList">
-                <datalist id="rowOptions"></datalist>
+                <label for="row" class="form-label">Row</label>
+                <input class="form-control w-25" id="row">
             </div>
             <div class="col-12">
-                <label for="positionDataList" class="form-label">Position</label>
-                <input class="form-control w-25" list="positionOptions" id="positionDataList">
+                <label for="position" class="form-label">Position</label>
+                <input class="form-control w-25" list="positionOptions" id="position" placeholder="Front, Back, Both">
                 <datalist id="positionOptions">
                     <option value="Front"></option>
                     <option value="Back"></option>
@@ -255,8 +231,8 @@
                 </datalist>
             </div>
             <div class="col-12">
-                <button class="btn btn-outline-secondary" type="submit" onclick="updateWine()">Update</button>
-                <button class="btn btn-outline-danger" type="submit" onclick="deleteWine()">Delete</button>
+                <button id="updateButton" class="btn btn-outline-secondary" type="submit">Update</button>
+                <button id="deleteButton" class="btn btn-outline-danger" type="submit">Delete</button>
             </div>
         </form>
     </div>

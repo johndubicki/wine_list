@@ -14,7 +14,22 @@ def create_app():
     db.init_app(app)
 
     @app.route('/', methods=['GET', 'POST'])
-    def index():
+    @app.route('/<id>', methods=['PATCH'])
+    def index(id: str=None):
+        if id and request.method == 'PATCH':
+            details = request.get_json()
+            wine = Wine.query.filter_by(id=int(id)).first()
+            tags = []
+            for k, v in details.items():
+                setattr(wine, k, v)
+                tags.append(v)
+            wine.tags = json.dumps(tags)
+            try:
+                db.session.commit()
+                response = {"status": "success"}
+            except Exception:
+                response = {"status": "error"}
+            return response
         all_wine = Wine.query.all()
         if request.method == 'POST':
             details = request.get_json()

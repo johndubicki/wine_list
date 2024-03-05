@@ -64,7 +64,9 @@ async function addWine(){
         "region": $("#regionDataList").val(),
         "country": $("#countryDataList").val(),
         "row": $("#rowDataList").val(),
-        "position": $("#positionDataList").val()
+        "position": $("#positionDataList").val(),
+        "window_start": $("#startDataList").val(),
+        "window_end": $("#endDataList").val()
     };
     let response = await fetch("/", {
         method: "POST",
@@ -83,10 +85,49 @@ async function addWine(){
         message.className = 'text-danger';
         message.innerText = 'Bottle(s) NOT added!';
     }
-    await messageFader();
+    await addMessageFader();
+}
+
+async function updateWine(id){
+    data = {
+        "quantity": $("#quantity").val(),
+        "vintage": $("#vintage").val(),
+        "size": $("#size").val(),
+        "category": $("#category").val(),
+        "varietal": $("#varietal").val(),
+        "name": $("#name").val(),
+        "producer": $("#producer").val(),
+        "subregion": $("#subregion").val(),
+        "region": $("#region").val(),
+        "country": $("#country").val(),
+        "row": $("#row").val(),
+        "position": $("#position").val(),
+        "window_start": $("#start").val(),
+        "window_end": $("#end").val()
+    };
+    let response = await fetch("/" + id, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    let status = await response.json();
+    let message = document.getElementById('message');
+    if(status['status'] === 'success'){
+        message.className = 'text-success';
+        message.innerText = 'Bottle(s) updated!';
+    }
+    else {
+        message.className = 'text-danger';
+        message.innerText = 'Bottle(s) NOT updated!';
+    }
+    await editMessageFader();
 }
 
 async function editWine(id){
+    let updateButton = document.getElementById('updateButton');
+    updateButton.onclick = function() { updateWine(id) };
     $("#refreshButton").fadeOut(350);
     $("#cellar").fadeOut(350);
     await new Promise(r => setTimeout(r, 350));
@@ -94,13 +135,36 @@ async function editWine(id){
     let response = await fetch("/search/" + id)
     let respData = await response.json();
     console.log(respData);
+    $("#quantity").val(respData['data']['quantity']);
+    $("#vintage").val(respData['data']['vintage']);
+    $("#size").val(respData['data']['size']);
+    $("#category").val(respData['data']['category']);
+    $("#varietal").val(respData['data']['varietal']);
+    $("#name").val(respData['data']['name']);
+    $("#producer").val(respData['data']['producer']);
+    $("#subregion").val(respData['data']['subregion']);
+    $("#region").val(respData['data']['region']);
+    $("#country").val(respData['data']['country']);
+    $("#start").val(respData['data']['window_start']);
+    $("#end").val(respData['data']['window_end']);
+    $("#row").val(respData['data']['row']);
+    $("#position").val(respData['data']['position']);
 }
 
-async function messageFader(){
+async function addMessageFader(){
     $("#add").hide();
     $("#flash").fadeIn(700);
     await new Promise(r => setTimeout(r, 1500));
     $("#flash").fadeOut(700);
     await new Promise(r => setTimeout(r, 700));
     $("#add").fadeIn(400);
+}
+
+async function editMessageFader(){
+    $("#edit").hide();
+    $("#flash").fadeIn(700);
+    await new Promise(r => setTimeout(r, 1500));
+    $("#flash").fadeOut(700);
+    await new Promise(r => setTimeout(r, 700));
+    viewCellar(refresh=true);
 }
