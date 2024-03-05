@@ -1,18 +1,56 @@
-$(document).ready(pageSetup());
-
-function pageSetup(){
-    console.log("page loaded");
+async function wineForm(){
+    $("#cellar").fadeOut(350);
+    $("#edit").fadeOut(350);
+    $("#refreshButton").fadeOut(350);
+    await new Promise(r => setTimeout(r, 350));
+    $("#add").fadeIn(350);
 }
 
-function wineForm(){
-    $("#cellar").hide();
-    $("#add").fadeIn(400);
+async function viewCellar(refresh=false){
+    if(refresh){
+        location.reload(true);
+    }
+    else {
+        $("#add").fadeOut(350);
+        $("#edit").fadeOut(350);
+        await new Promise(r => setTimeout(r, 350));
+        $("#cellar").fadeIn(350);
+        $("#refreshButton").fadeIn(350);
+    }
 }
 
-function viewCellar(){
-    location.reload(true);
-}
+async function csvSearch(){
+    let search = document.getElementById('search');
+    let data = {
+        'terms': search.value
+    }
+    let response = await fetch("/search", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    let respData = await response.json();
+    if(respData['data'].length > 0) {
+        let cellar = document.getElementById('cellarBody');
+        cellar.innerHTML = '';
+        respData['data'].forEach(wine => {
+            console.log(wine);
+            // DRAW TABLE ROWS HERE
+        });
+    }
+    else {
+        console.log(respData);
+        let cellar = document.getElementById('cellar');
+        cellar.innerHTML = '<div style="height: 150px;"></div><h3 class="text-secondary">You have no matching wines.</h3>';
+        await new Promise(r => setTimeout(r, 300));
+        await $("#cellar").fadeOut(1500);
+        await new Promise(r => setTimeout(r, 1500));
+        viewCellar(refresh=true);
+    }
 
+}
 async function addWine(){
     data = {
         "quantity": $("#quantityDataList").val(),
@@ -36,7 +74,6 @@ async function addWine(){
         body: JSON.stringify(data)
     });
     let status = await response.json();
-    console.log(status);
     let message = document.getElementById('message');
     if(status['status'] === 'success'){
         message.className = 'text-success';
@@ -49,11 +86,21 @@ async function addWine(){
     await messageFader();
 }
 
+async function editWine(id){
+    $("#refreshButton").fadeOut(350);
+    $("#cellar").fadeOut(350);
+    await new Promise(r => setTimeout(r, 350));
+    $("#edit").fadeIn(350);
+    let response = await fetch("/search/" + id)
+    let respData = await response.json();
+    console.log(respData);
+}
+
 async function messageFader(){
-    await $("#add").hide();
-    await $("#flash").fadeIn(700);
+    $("#add").hide();
+    $("#flash").fadeIn(700);
     await new Promise(r => setTimeout(r, 1500));
-    await $("#flash").fadeOut(700);
+    $("#flash").fadeOut(700);
     await new Promise(r => setTimeout(r, 700));
-    await $("#add").fadeIn(400);
+    $("#add").fadeIn(400);
 }

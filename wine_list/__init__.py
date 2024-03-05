@@ -33,4 +33,24 @@ def create_app():
             return response
         return render_template('index.html', wines=all_wine)
     
+    @app.route('/search', methods=['POST'])
+    @app.route('/search/<id>', methods=['GET'])
+    def search(id: str=None):
+        if id:
+            matching_wine = Wine.query.filter_by(id=int(id)).first()
+            return {
+                'status': 'success',
+                'data': matching_wine.to_dict()
+            }
+        if request.method == 'POST':
+            all_wine = Wine.query.all()
+            data = request.get_json()
+            search_list = [term.strip() for term in str(data['terms']).split(',')]
+            print(search_list)
+            matching_wine = [wine.to_dict() for wine in all_wine if set(search_list).issubset(set(json.loads(wine.tags)))]
+            return {
+                'status': 'success',
+                'data': matching_wine
+            }
+
     return app

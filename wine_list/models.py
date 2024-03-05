@@ -14,4 +14,9 @@ class Wine(db.Model):
     producer = db.Column(db.String())
     name = db.Column(db.String())
     size = db.Column(db.String())
+    window_start = db.Column(db.String(), default='?')
+    window_end = db.Column(db.String(), default='?')
     tags = db.Column(db.String())
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
