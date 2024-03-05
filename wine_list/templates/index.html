@@ -2,13 +2,52 @@
 {% block content %}
     <div id="cellar" name="cellar" class="text-center">
         {% if wines %}
-            {% for wine in wines %}
-                {{ wine }}
-            {% endfor %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Vintage</th>
+                        <th scope="col">Bottle Size</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Varietal</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Producer</th>
+                        <th scope="col">Subregion</th>
+                        <th scope="col">Region</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Row</th>
+                        <th scope="col">Position</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for wine in wines %}
+                        <tr>
+                            <td>{{ wine.quantity }}</td>
+                            <td>{{ wine.vintage }}</td>
+                            <td>{{ wine.size }}</td>
+                            <td>{{ wine.category }}</td>
+                            <td>{{ wine.varietal }}</td>
+                            <td>{{ wine.name }}</td>
+                            <td>{{ wine.producer }}</td>
+                            <td>{{ wine.subregion }}</td>
+                            <td>{{ wine.region }}</td>
+                            <td>{{ wine.country }}</td>
+                            <td>{{ wine.row }}</td>
+                            <td>{{ wine.position }}</td>
+                            <td></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% else %}
             <div style="height: 60px;"></div>
             <span>The cellar is empty.  Add a wine <a href="#" onclick="wineForm()">here</a>.</span>
         {% endif %}
+    </div>
+    <div id="flash" name="flash" class="text-center" style="display: none;">
+        <div style="height: 200px;"></div>
+        <h2 id="message" name="message" class=""></h2>
     </div>
     <div id="add" name="add" class="mt-3 p-4" style="display: none; background-color: #F8F9FA;">
         <form class="row g-3 mx-4">

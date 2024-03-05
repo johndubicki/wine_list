@@ -10,8 +10,7 @@ function wineForm(){
 }
 
 function viewCellar(){
-    $("#add").hide();
-    $("#cellar").fadeIn(400);
+    location.reload(true);
 }
 
 async function addWine(){
@@ -38,4 +37,23 @@ async function addWine(){
     });
     let status = await response.json();
     console.log(status);
+    let message = document.getElementById('message');
+    if(status['status'] === 'success'){
+        message.className = 'text-success';
+        message.innerText = 'Bottle(s) added!';
+    }
+    else {
+        message.className = 'text-danger';
+        message.innerText = 'Bottle(s) NOT added!';
+    }
+    await messageFader();
+}
+
+async function messageFader(){
+    await $("#add").hide();
+    await $("#flash").fadeIn(700);
+    await new Promise(r => setTimeout(r, 1500));
+    await $("#flash").fadeOut(700);
+    await new Promise(r => setTimeout(r, 700));
+    await $("#add").fadeIn(400);
 }

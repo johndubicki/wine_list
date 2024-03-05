@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,8 +19,11 @@ def create_app():
         if request.method == 'POST':
             details = request.get_json()
             new_wine = Wine()
+            tags = []
             for k, v in details.items():
                 setattr(new_wine, k, v)
+                tags.append(v)
+            new_wine.tags = json.dumps(tags)
             db.session.add(new_wine)
             try:
                 db.session.commit()
