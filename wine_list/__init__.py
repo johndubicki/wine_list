@@ -13,24 +13,37 @@ def create_app():
 
     db.init_app(app)
 
-    @app.route('/', methods=['GET', 'POST'])
-    @app.route('/<id>', methods=['PATCH'])
-    def index(id: str=None):
-        if id and request.method == 'PATCH':
-            details = request.get_json()
-            wine = Wine.query.filter_by(id=int(id)).first()
-            tags = []
-            for k, v in details.items():
-                setattr(wine, k, v)
-                tags.append(v)
-            wine.tags = json.dumps(tags)
-            try:
-                db.session.commit()
-                response = {"status": "success"}
-            except Exception:
-                response = {"status": "error"}
-            return response
+    @app.route('/options', methods=['GET'])
+    def create_options_dict():
         all_wine = Wine.query.all()
+        options = {
+            'vintage': set(),
+            'varietal': set(),
+            'name': set(),
+            'producer': set(),
+            'subregion': set(),
+            'region': set(),
+            'country': set(),
+            'row': set()
+        }
+        for wine in all_wine:
+            options['vintage'].add(wine.vintage)
+            options['varietal'].add(wine.varietal)
+            options['name'].add(wine.name)
+            options['producer'].add(wine.producer)
+            options['subregion'].add(wine.subregion)
+            options['region'].add(wine.region)
+            options['country'].add(wine.country)
+            options['row'].add(wine.row)
+        options = {k: sorted(v) for k, v in options.items()}
+        return options
+    
+    @app.route('/', methods=['GET', 'POST'])
+    @app.route('/<id>', methods=['PATCH', 'DELETE'])
+    def index(id: str=None):
+        if request.method == 'GET':
+            all_wine = Wine.query.all()
+            return render_template('index.html', wines=all_wine)
         if request.method == 'POST':
             details = request.get_json()
             new_wine = Wine()
@@ -40,32 +53,36 @@ def create_app():
                 tags.append(v)
             new_wine.tags = json.dumps(tags)
             db.session.add(new_wine)
-            try:
-                db.session.commit()
-                response = {"status": "success"}
-            except Exception:
-                response = {"status": "error"}
-            return response
-        return render_template('index.html', wines=all_wine)
-    
+        if request.method == 'PATCH' and id:
+            details = request.get_json()
+            wine = Wine.query.filter_by(id=int(id)).first()
+            tags = []
+            for k, v in details.items():
+                setattr(wine, k, v)
+                tags.append(v)
+            wine.tags = json.dumps(tags)
+        if request.method == 'DELETE' and id:
+            wine = Wine.query.filter_by(id=int(id)).delete()
+        try:
+            db.session.commit()
+            response = {"status": "success"}
+        except Exception:
+            response = {"status": "error"}
+        return response
+            
     @app.route('/search', methods=['POST'])
     @app.route('/search/<id>', methods=['GET'])
     def search(id: str=None):
-        if id:
-            matching_wine = Wine.query.filter_by(id=int(id)).first()
-            return {
-                'status': 'success',
-                'data': matching_wine.to_dict()
-            }
+        if request.method == 'GET' and id:
+            matching_wine = Wine.query.filter_by(id=int(id)).first().to_dict()
         if request.method == 'POST':
             all_wine = Wine.query.all()
             data = request.get_json()
             search_list = [term.strip() for term in str(data['terms']).split(',')]
-            print(search_list)
             matching_wine = [wine.to_dict() for wine in all_wine if set(search_list).issubset(set(json.loads(wine.tags)))]
-            return {
-                'status': 'success',
-                'data': matching_wine
-            }
+        return {
+            'status': 'success',
+            'data': matching_wine
+        }
 
     return app

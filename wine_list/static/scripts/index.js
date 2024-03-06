@@ -1,3 +1,20 @@
+$( document ).ready(function() {
+    fetch("/options")
+    .then(response => response.json())
+    .then(options => {
+        for ( let [k, v] of Object.entries(options) ) {
+            let element = document.getElementById(k + 'Options');
+            v.forEach(option => {
+                if ( option.length > 0 ) {
+                    let newOption = document.createElement('option');
+                    newOption.value = option;
+                    element.appendChild(newOption);
+                }
+            });
+        }
+    })
+})
+
 async function wineForm(){
     $("#cellar").fadeOut(350);
     $("#edit").fadeOut(350);
@@ -88,6 +105,26 @@ async function addWine(){
     await addMessageFader();
 }
 
+async function deleteWine(id){
+    let response = await fetch("/" + id, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    });
+    let status = await response.json();
+    let message = document.getElementById('message');
+    if(status['status'] === 'success'){
+        message.className = 'text-success';
+        message.innerText = 'Bottle(s) deleted!';
+    }
+    else {
+        message.className = 'text-danger';
+        message.innerText = 'Bottle(s) NOT deleted!';
+    }
+    await editMessageFader();
+}
+
 async function updateWine(id){
     data = {
         "quantity": $("#quantity").val(),
@@ -128,6 +165,8 @@ async function updateWine(id){
 async function editWine(id){
     let updateButton = document.getElementById('updateButton');
     updateButton.onclick = function() { updateWine(id) };
+    let deleteButton = document.getElementById('deleteButton');
+    deleteButton.onclick = function() { deleteWine(id) };
     $("#refreshButton").fadeOut(350);
     $("#cellar").fadeOut(350);
     await new Promise(r => setTimeout(r, 350));
