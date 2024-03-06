@@ -2,7 +2,7 @@
 {% block content %}
     {% if wines %}
     <div id="refreshButton" class="text-end mt-4">
-        <button class="btn btn-sm btn-outline-secondary" type="button" onclick="location.reload(true)">
+        <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Refresh" onclick="location.reload(true)">
             <i class="bi bi-arrow-clockwise"></i>
         </button>
     </div>
@@ -31,7 +31,7 @@
             </thead>
             <tbody id="cellarBody">
                 {% for wine in wines %}
-                    <tr>
+                    <tr id="wine{{ wine.id }}">
                         <td>{{ wine.quantity }}</td>
                         <td>{{ wine.vintage }}</td>
                         <td>{{ wine.size }}</td>
@@ -46,8 +46,11 @@
                         <td>{{ wine.row }}</td>
                         <td>{{ wine.position }}</td>
                         <td>
-                            <button class="btn btn-sm btn-outline-secondary" type="button" onclick="editWine({{ wine.id }})">
+                            <button id="editWineButton" name="" class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Edit" onclick="editWine({{ wine.id }})">
                                 <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button id="copyWineButton" name="" class="btn btn-sm btn-outline-secondary mt-1" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Copy" onclick="copyWine({{ wine.id }})">
+                                <i class="bi bi-copy"></i>
                             </button>
                         </td>
                     </tr>
@@ -128,19 +131,20 @@
                 <input class="form-control" list="countryOptions" id="countryDataList" placeholder="France, California, Washington, Spain">
                 <datalist id="countryOptions"></datalist>
             </div>
-            <div class="col-6">
-                <row>
-                    <div class="col-4">
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-xl-4" style="margin-right: -70px;">
                         <label for="startDataList" class="form-label">Window</label>
                         <input class="form-control w-50" list="rowOptions" id="startDataList" placeholder="Start">
                     </div>
-                    <div class="col-4">-</div>
-                    <div class="col-4">
-                        <label for="endDataList" class="form-label"></label>
-                        <input class="form-control w-50" list="rowOptions" id="endDataList" placeholder="End">
+                    <div class="col-xl-4">
+                        <label for="endDataList" class="form-label"> </label>
+                        <input class="form-control w-50" style="margin-top: 7px;" list="rowOptions" id="endDataList" placeholder="End">
                     </div>
-                </row>
+                    <div class="col-4"></div>
+                </div>
             </div>
+            <div class="col-7"></div>
             <div class="col-12">
                 <label for="rowDataList" class="form-label">Row</label>
                 <input class="form-control w-25" list="rowOptions" id="rowDataList" placeholder="Row">
@@ -160,7 +164,7 @@
             </div>
         </form>
     </div>
-    <!-- WINE EDIT FORM -->
+    <!-- EDIT WINE FORM -->
     <div id="edit" name="edit" class="mt-3 p-4" style="display: none; background-color: #F8F9FA;">
         <form class="row g-3 mx-4">
             <div class="col-md-4">

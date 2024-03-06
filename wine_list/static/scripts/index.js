@@ -1,4 +1,6 @@
 $( document ).ready(function() {
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     fetch("/options")
     .then(response => response.json())
     .then(options => {
@@ -36,7 +38,19 @@ async function viewCellar(refresh=false){
     }
 }
 
+function copyWine(id) {
+    let parent = document.getElementById('wine' + id);
+    let children = parent.children;
+    for ( i=0; i<13; i++ ) {
+        console.log(children[i].innerText);
+    }
+    // split the window
+
+}
+
 async function csvSearch(){
+    $("#clearSearchButton").fadeIn(200);
+    viewCellar();
     let search = document.getElementById('search');
     let data = {
         'terms': search.value
@@ -53,8 +67,47 @@ async function csvSearch(){
         let cellar = document.getElementById('cellarBody');
         cellar.innerHTML = '';
         respData['data'].forEach(wine => {
-            console.log(wine);
-            // DRAW TABLE ROWS HERE
+            let tr = document.createElement('tr');
+            let quantity = document.createElement('td');
+            quantity.innerText = wine.quantity;
+            tr.appendChild(quantity);
+            let vintage = document.createElement('td');
+            vintage.innerText = wine.vintage;
+            tr.appendChild(vintage);
+            let size = document.createElement('td');
+            size.innerText = wine.size;
+            tr.appendChild(size);
+            let category = document.createElement('td');
+            category.innerText = wine.category;
+            tr.appendChild(category);
+            let varietal = document.createElement('td');
+            varietal.innerText = wine.varietal;
+            tr.appendChild(varietal);
+            let name = document.createElement('td');
+            name.innerText = wine.name;
+            tr.appendChild(name);
+            let producer = document.createElement('td');
+            producer.innerText = wine.producer;
+            tr.appendChild(producer);
+            let subregion = document.createElement('td');
+            subregion.innerText = wine.subregion;
+            tr.appendChild(subregion);
+            let region = document.createElement('td');
+            region.innerText = wine.region;
+            tr.appendChild(region);
+            let country = document.createElement('td');
+            country.innerText = wine.country;
+            tr.appendChild(country);
+            let window = document.createElement('td');
+            window.innerText = wine.window_start + "-" + wine.window_end;
+            tr.appendChild(window);
+            let row = document.createElement('td');
+            row.innerText = wine.row;
+            tr.appendChild(row);
+            let position = document.createElement('td');
+            position.innerText = wine.position;
+            tr.appendChild(position);
+            cellar.appendChild(tr);
         });
     }
     else {
@@ -66,8 +119,12 @@ async function csvSearch(){
         await new Promise(r => setTimeout(r, 1500));
         viewCellar(refresh=true);
     }
-
 }
+
+function clearSearch() {
+    location.reload(true);
+}
+
 async function addWine(){
     data = {
         "quantity": $("#quantityDataList").val(),
