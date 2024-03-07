@@ -1,5 +1,6 @@
 from wine_list import db
 
+
 class Wine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     row = db.Column(db.String())
@@ -14,8 +15,8 @@ class Wine(db.Model):
     producer = db.Column(db.String())
     name = db.Column(db.String())
     size = db.Column(db.String())
-    window_start = db.Column(db.String(), default='?')
-    window_end = db.Column(db.String(), default='?')
+    window_start = db.Column(db.String(), default="?")
+    window_end = db.Column(db.String(), default="?")
     tags = db.Column(db.String())
 
     def to_dict(self):

@@ -21,6 +21,7 @@ async function wineForm(copy={}){
     $("#cellar").fadeOut(350);
     $("#edit").fadeOut(350);
     $("#refreshButton").fadeOut(350);
+    $("#nowDrinking").fadeOut(350);
     await new Promise(r => setTimeout(r, 350));
     $("#add").fadeIn(350);
     if ( copy ) {
@@ -43,10 +44,20 @@ async function viewCellar(refresh=false){
     else {
         $("#add").fadeOut(350);
         $("#edit").fadeOut(350);
+        $("#nowDrinking").fadeOut(350);
         await new Promise(r => setTimeout(r, 350));
         $("#cellar").fadeIn(350);
         $("#refreshButton").fadeIn(350);
     }
+}
+
+async function nowDrinking(){
+    $("#add").fadeOut(350);
+    $("#edit").fadeOut(350);
+    $("#cellar").fadeOut(350);
+    $("#refreshButton").fadeOut(350);
+    await new Promise(r => setTimeout(r, 350));
+    $("#nowDrinking").fadeIn(350);
 }
 
 function copyWine(id) {
@@ -285,11 +296,11 @@ async function editWine(id){
     deleteButton.onclick = function() { deleteWine(id) };
     $("#refreshButton").fadeOut(350);
     $("#cellar").fadeOut(350);
+    $("#nowDrinking").fadeOut(350);
     await new Promise(r => setTimeout(r, 350));
     $("#edit").fadeIn(350);
     let response = await fetch("/search/" + id)
     let respData = await response.json();
-    console.log(respData);
     $("#quantity").val(respData['data']['quantity']);
     $("#vintage").val(respData['data']['vintage']);
     $("#size").val(respData['data']['size']);
