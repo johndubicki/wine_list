@@ -18,20 +18,22 @@ $( document ).ready(function() {
 })
 
 async function wineForm(copy={}){
-    if ( copy ) {
-        console.log(copy);
-        for ( let [k, v] of Object.entries(copy) ) {
-            document.getElementById(k).value = "";
-            if (v.length > 0 ) {
-                document.getElementById(k).value = v;
-            }
-        }
-    }
     $("#cellar").fadeOut(350);
     $("#edit").fadeOut(350);
     $("#refreshButton").fadeOut(350);
     await new Promise(r => setTimeout(r, 350));
     $("#add").fadeIn(350);
+    if ( copy ) {
+        for ( let [k, v] of Object.entries(copy) ) {
+            try {
+                document.getElementById(k).value = "";
+                if (v.length > 0 ) {
+                    document.getElementById(k).value = v;
+                }
+            }
+            catch ( TypeError ) {}
+        }
+    }
 }
 
 async function viewCellar(refresh=false){
@@ -66,7 +68,6 @@ function copyWine(id) {
 
 async function csvSearch(){
     $("#clearSearchButton").fadeIn(200);
-    viewCellar();
     let search = document.getElementById('search');
     let data = {
         'terms': search.value
@@ -86,42 +87,55 @@ async function csvSearch(){
             let tr = document.createElement('tr');
             tr.id = 'wine' + wine.id;
             let quantity = document.createElement('td');
+            quantity.className = 'quantityDataList';
             quantity.innerText = wine.quantity;
             tr.appendChild(quantity);
             let vintage = document.createElement('td');
+            vintage.className = 'vintageDataList';
             vintage.innerText = wine.vintage;
             tr.appendChild(vintage);
             let size = document.createElement('td');
+            size.className = 'sizeDataList';
             size.innerText = wine.size;
             tr.appendChild(size);
             let category = document.createElement('td');
+            category.className = 'categoryDataList';
             category.innerText = wine.category;
             tr.appendChild(category);
             let varietal = document.createElement('td');
+            varietal.className = 'varietalDataList';
             varietal.innerText = wine.varietal;
             tr.appendChild(varietal);
             let name = document.createElement('td');
+            name.className = 'nameDataList';
             name.innerText = wine.name;
             tr.appendChild(name);
             let producer = document.createElement('td');
+            producer.className = 'producerDataList';
             producer.innerText = wine.producer;
             tr.appendChild(producer);
             let subregion = document.createElement('td');
+            subregion.className = 'subregionDataList';
             subregion.innerText = wine.subregion;
             tr.appendChild(subregion);
             let region = document.createElement('td');
+            region.className = 'regionDataList';
             region.innerText = wine.region;
             tr.appendChild(region);
             let country = document.createElement('td');
+            country.className = 'countryDataList';
             country.innerText = wine.country;
             tr.appendChild(country);
             let window = document.createElement('td');
+            window.className = 'windowDataList';
             window.innerText = wine.window_start + "-" + wine.window_end;
             tr.appendChild(window);
             let row = document.createElement('td');
+            row.className = 'rowDataList';
             row.innerText = wine.row;
             tr.appendChild(row);
             let position = document.createElement('td');
+            position.className = 'positionDataList';
             position.innerText = wine.position;
             tr.appendChild(position);
             let controls = document.createElement('td');
@@ -154,9 +168,9 @@ async function csvSearch(){
             tr.appendChild(controls);
             cellar.appendChild(tr);
         });
+        viewCellar();
     }
     else {
-        console.log(respData);
         let cellar = document.getElementById('cellar');
         cellar.innerHTML = '<div style="height: 150px;"></div><h3 class="text-secondary">You have no matching wines.</h3>';
         await new Promise(r => setTimeout(r, 300));
