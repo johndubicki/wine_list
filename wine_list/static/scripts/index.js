@@ -17,7 +17,16 @@ $( document ).ready(function() {
     })
 })
 
-async function wineForm(){
+async function wineForm(copy={}){
+    if ( copy ) {
+        console.log(copy);
+        for ( let [k, v] of Object.entries(copy) ) {
+            document.getElementById(k).value = "";
+            if (v.length > 0 ) {
+                document.getElementById(k).value = v;
+            }
+        }
+    }
     $("#cellar").fadeOut(350);
     $("#edit").fadeOut(350);
     $("#refreshButton").fadeOut(350);
@@ -41,11 +50,18 @@ async function viewCellar(refresh=false){
 function copyWine(id) {
     let parent = document.getElementById('wine' + id);
     let children = parent.children;
+    let data = {};
     for ( i=0; i<13; i++ ) {
-        console.log(children[i].innerText);
+        if ( children[i].className === 'window' ) {
+            let window = children[i].innerText.split('-');
+            data['startDataList'] = window[0];
+            data['endDataList'] = window[1];
+        }
+        else if ( children[i].className ) {
+            data[children[i].className] = children[i].innerText;
+        }
     }
-    // split the window
-
+    wineForm(copy=data);
 }
 
 async function csvSearch(){
@@ -68,6 +84,7 @@ async function csvSearch(){
         cellar.innerHTML = '';
         respData['data'].forEach(wine => {
             let tr = document.createElement('tr');
+            tr.id = 'wine' + wine.id;
             let quantity = document.createElement('td');
             quantity.innerText = wine.quantity;
             tr.appendChild(quantity);
@@ -107,6 +124,34 @@ async function csvSearch(){
             let position = document.createElement('td');
             position.innerText = wine.position;
             tr.appendChild(position);
+            let controls = document.createElement('td');
+            let editButton = document.createElement('button');
+            editButton.id = 'editWineButton';
+            editButton.className = 'btn btn-sm btn-outline-secondary';
+            editButton.type = 'button';
+            editButton.setAttribute('data-bs-toggle', 'tooltip');
+            editButton.setAttribute('data-bs-placement', 'left');
+            editButton.setAttribute('data-bs-title', 'Edit');
+            let editAction = 'editWine(' + wine.id + ')';
+            editButton.setAttribute('onclick', editAction);
+            let editButtonImage = document.createElement('i');
+            editButtonImage.className = 'bi bi-pencil-fill';
+            editButton.appendChild(editButtonImage);
+            controls.appendChild(editButton);
+            let copyButton = document.createElement('button');
+            copyButton.id = 'copyWineButton';
+            copyButton.className = 'btn btn-sm btn-outline-secondary mt-1';
+            copyButton.type = 'button';
+            copyButton.setAttribute('data-bs-toggle', 'tooltip');
+            copyButton.setAttribute('data-bs-placement', 'left');
+            copyButton.setAttribute('data-bs-title', 'Copy');
+            let copyAction = 'copyWine(' + wine.id + ')';
+            copyButton.setAttribute('onclick', copyAction);
+            let copyButtonImage = document.createElement('i');
+            copyButtonImage.className = 'bi bi-copy';
+            copyButton.appendChild(copyButtonImage);
+            controls.appendChild(copyButton);
+            tr.appendChild(controls);
             cellar.appendChild(tr);
         });
     }

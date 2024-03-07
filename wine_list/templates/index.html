@@ -32,19 +32,19 @@
             <tbody id="cellarBody">
                 {% for wine in wines %}
                     <tr id="wine{{ wine.id }}">
-                        <td>{{ wine.quantity }}</td>
-                        <td>{{ wine.vintage }}</td>
-                        <td>{{ wine.size }}</td>
-                        <td>{{ wine.category }}</td>
-                        <td>{{ wine.varietal }}</td>
-                        <td>{{ wine.name }}</td>
-                        <td>{{ wine.producer }}</td>
-                        <td>{{ wine.subregion }}</td>
-                        <td>{{ wine.region }}</td>
-                        <td>{{ wine.country }}</td>
-                        <td>{{ wine.window_start }}-{{ wine.window_end }}</td>
-                        <td>{{ wine.row }}</td>
-                        <td>{{ wine.position }}</td>
+                        <td class="quantityDataList">{{ wine.quantity }}</td>
+                        <td class="vintageDataList">{{ wine.vintage }}</td>
+                        <td class="sizeDataList">{{ wine.size }}</td>
+                        <td class="categoryDataList">{{ wine.category }}</td>
+                        <td class="varietalDataList">{{ wine.varietal }}</td>
+                        <td class="nameDataList">{{ wine.name }}</td>
+                        <td class="producerDataList">{{ wine.producer }}</td>
+                        <td class="subregionDataList">{{ wine.subregion }}</td>
+                        <td class="regionDataList">{{ wine.region }}</td>
+                        <td class="countryDataList">{{ wine.country }}</td>
+                        <td class="window">{{ wine.window_start }}-{{ wine.window_end }}</td>
+                        <td class="rowDataList">{{ wine.row }}</td>
+                        <td class="positionDataList">{{ wine.position }}</td>
                         <td>
                             <button id="editWineButton" name="" class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="Edit" onclick="editWine({{ wine.id }})">
                                 <i class="bi bi-pencil-fill"></i>
