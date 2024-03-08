@@ -7,23 +7,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-def generate_old_and_in_window_wines(all_wine: list) -> tuple:
-    current_year = int(datetime.now().strftime("%Y"))
-    old_wines = []
-    in_window_wines = []
-    for wine in all_wine:
-        try:
-            if current_year > int(wine.window_end):
-                old_wines.append(wine)
-            if current_year >= int(wine.window_start) and current_year < int(
-                wine.window_end
-            ):
-                in_window_wines.append(wine)
-        except ValueError:
-            pass
-    return (old_wines, in_window_wines)
-
-
 def create_app():
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///wine_cellar.db"
@@ -40,7 +23,7 @@ def create_app():
             old_wine, in_window_wine = generate_old_and_in_window_wines(all_wine)
             return render_template(
                 "index.html",
-                wines=all_wine,
+                wines=sorted(all_wine, key=lambda x: x.producer),
                 old_wine=old_wine,
                 in_window_wine=in_window_wine,
             )
@@ -112,3 +95,23 @@ def create_app():
         return options
 
     return app
+
+
+def generate_old_and_in_window_wines(all_wine: list) -> tuple:
+    current_year = int(datetime.now().strftime("%Y"))
+    old_wines = []
+    in_window_wines = []
+    for wine in all_wine:
+        try:
+            if current_year > int(wine.window_end):
+                old_wines.append(wine)
+            if current_year >= int(wine.window_start) and current_year < int(
+                wine.window_end
+            ):
+                in_window_wines.append(wine)
+        except ValueError:
+            pass
+    return (
+        sorted(old_wines, key=lambda x: x.window_end),
+        sorted(in_window_wines, key=lambda x: x.window_end),
+    )
