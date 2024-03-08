@@ -19,7 +19,7 @@ Not quite single-page, but small enough to not really benefit from Blueprints.  
  ```
  4. Activate it.
  ```
- source /venv/bin/activate
+ source venv/bin/activate
  ```
  5. Install dependancies.
  ```
