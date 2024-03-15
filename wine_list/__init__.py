@@ -1,7 +1,8 @@
 import json
 from datetime import datetime
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS, cross_origin
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -9,6 +10,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///wine_cellar.db"
 
     from .models import Wine
@@ -55,19 +57,24 @@ def create_app():
 
     @app.route("/search", methods=["POST"])
     @app.route("/search/<id>", methods=["GET"])
+    @cross_origin()
     def search(id: str = None):
         if request.method == "GET" and id:
             matching_wine = Wine.query.filter_by(id=int(id)).first().to_dict()
         if request.method == "POST":
             all_wine = Wine.query.all()
             data = request.get_json()
+            print(request.headers)
             search_list = [term.strip() for term in str(data["terms"]).split(",")]
             matching_wine = [
                 wine.to_dict()
                 for wine in all_wine
                 if set(search_list).issubset(set(json.loads(wine.tags)))
             ]
-        return {"status": "success", "data": matching_wine}
+        response = jsonify(status="success", data=matching_wine)
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        print(response.headers)
+        return response
 
     @app.route("/options", methods=["GET"])
     def create_options_dict():

@@ -18,6 +18,8 @@ $( document ).ready(function() {
 })
 
 async function wineForm(copy={}){
+    $("#clearSearchButton").fadeOut(350);
+    document.getElementById("search").value = '';
     $("#cellar").fadeOut(350);
     $("#edit").fadeOut(350);
     $("#refreshButton").fadeOut(350);
@@ -83,14 +85,17 @@ async function csvSearch(){
     let data = {
         'terms': search.value
     }
-    let response = await fetch("/search", {
+    let response = await fetch("search", {
         method: "POST",
+        mode: "cors",
         headers: {
-            "Content-Type": "application/json"
+            "Accept": "application/json",
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(data)
-    });
+    })
     let respData = await response.json();
+    console.log(respData);
     if(respData['data'].length > 0) {
         let cellar = document.getElementById('cellarBody');
         cellar.innerHTML = '';
@@ -157,7 +162,7 @@ async function csvSearch(){
             editButton.setAttribute('data-bs-toggle', 'tooltip');
             editButton.setAttribute('data-bs-placement', 'left');
             editButton.setAttribute('data-bs-title', 'Edit');
-            let editAction = 'editWine(' + wine.id + ')';
+            let editAction = 'editWine(' + wine.id + '); return false;';
             editButton.setAttribute('onclick', editAction);
             let editButtonImage = document.createElement('i');
             editButtonImage.className = 'bi bi-pencil-fill';
@@ -170,7 +175,7 @@ async function csvSearch(){
             copyButton.setAttribute('data-bs-toggle', 'tooltip');
             copyButton.setAttribute('data-bs-placement', 'left');
             copyButton.setAttribute('data-bs-title', 'Copy');
-            let copyAction = 'copyWine(' + wine.id + ')';
+            let copyAction = 'copyWine(' + wine.id + '); return false;';
             copyButton.setAttribute('onclick', copyAction);
             let copyButtonImage = document.createElement('i');
             copyButtonImage.className = 'bi bi-copy';
@@ -291,9 +296,11 @@ async function updateWine(id){
 
 async function editWine(id){
     let updateButton = document.getElementById('updateButton');
-    updateButton.onclick = function() { updateWine(id) };
+    updateButton.setAttribute('onclick', 'updateWine(' + id + '); return false;');
     let deleteButton = document.getElementById('deleteButton');
-    deleteButton.onclick = function() { deleteWine(id) };
+    deleteButton.setAttribute('onclick', 'deleteWine(' + id + '); return false;');
+    $("#clearSearchButton").fadeOut(350);
+    document.getElementById("search").value = '';
     $("#refreshButton").fadeOut(350);
     $("#cellar").fadeOut(350);
     $("#nowDrinking").fadeOut(350);

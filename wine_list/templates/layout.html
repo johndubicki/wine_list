@@ -27,10 +27,10 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="#" onclick="nowDrinking()">Now Drinking</a>
+                            <a class="nav-link" aria-current="page" href="#" onclick="nowDrinking(); return false;">Now Drinking</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="wineForm()">Add Bottle(s)</a>
+                            <a class="nav-link" href="#" onclick="wineForm(); return false;">Add Bottle(s)</a>
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -39,7 +39,7 @@
                         </button>
                         <div style="width: 10px;"></div>
                         <input id="search" class="form-control me-2" type="search" placeholder="CSV Search" aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="submit" onclick="csvSearch()">Search</button>
+                        <button class="btn btn-outline-secondary" type="submit" onclick="csvSearch(); return false;">Search</button>
                     </form>
                 </div>
             </div>
