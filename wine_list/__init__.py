@@ -41,8 +41,8 @@ def create_app():
             details = request.get_json()
             new_wine = Wine()
             # tags = []
-            # for k, v in details.items():
-            #     setattr(new_wine, k, v)
+            for k, v in details.items():
+                setattr(new_wine, k, v)
             #     tags.append(v)
             # new_wine.tags = json.dumps(tags)
             tags = []
