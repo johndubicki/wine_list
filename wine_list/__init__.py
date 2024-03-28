@@ -26,10 +26,14 @@ def create_app():
     def index(id: str = None):
         if request.method == "GET":
             all_wine = Wine.query.all()
+            try:
+                all_wine = sorted(all_wine, key=lambda x: x.producer)
+            except TypeError:
+                pass
             old_wine, in_window_wine = generate_old_and_in_window_wines(all_wine)
             return render_template(
                 "index.html",
-                wines=sorted(all_wine, key=lambda x: x.producer),
+                wines=all_wine,
                 old_wine=old_wine,
                 in_window_wine=in_window_wine,
             )
