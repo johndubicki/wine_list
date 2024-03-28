@@ -65,7 +65,7 @@ def create_app():
             all_wine = Wine.query.all()
             data = request.get_json()
             print(request.headers)
-            search_list = [term.strip() for term in str(data["terms"]).split(",")]
+            search_list = [term.strip().lower() for term in str(data["terms"]).split(",")]
             matching_wine = [
                 wine.to_dict()
                 for wine in all_wine
