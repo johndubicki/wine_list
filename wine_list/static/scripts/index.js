@@ -168,9 +168,12 @@ async function csvSearch(){
             editButtonImage.className = 'bi bi-pencil-fill';
             editButton.appendChild(editButtonImage);
             controls.appendChild(editButton);
+            let marginDiv = document.createElement('div');
+            marginDiv.className = 'm-1';
+            controls.appendChild(marginDiv);
             let copyButton = document.createElement('button');
             copyButton.id = 'copyWineButton';
-            copyButton.className = 'btn btn-sm btn-outline-secondary mt-1';
+            copyButton.className = 'btn btn-sm btn-outline-secondary';
             copyButton.type = 'button';
             copyButton.setAttribute('data-bs-toggle', 'tooltip');
             copyButton.setAttribute('data-bs-placement', 'left');
