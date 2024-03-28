@@ -84,7 +84,7 @@ def create_app():
             matching_wine = [
                 wine.to_dict()
                 for wine in all_wine
-                if set(search_list).issubset(set(json.loads(details['tags)))
+                if set(search_list).issubset(set(json.loads(wine.tags)))
             ]
         response = jsonify(status="success", data=matching_wine)
         response.headers.add("Access-Control-Allow-Origin", "*")
@@ -105,14 +105,14 @@ def create_app():
             "row": set(),
         }
         for wine in all_wine:
-            options["vintage"].add(details['vintage)
-            options["varietal"].add(details['varietal)
-            options["name"].add(details['name)
-            options["producer"].add(details['producer)
-            options["subregion"].add(details['subregion)
-            options["region"].add(details['region)
-            options["country"].add(details['country)
-            options["row"].add(details['row)
+            options["vintage"].add(wine.vintage)
+            options["varietal"].add(wine.varietal)
+            options["name"].add(wine.name)
+            options["producer"].add(wine.producer)
+            options["subregion"].add(wine.subregion)
+            options["region"].add(wine.region)
+            options["country"].add(wine.country)
+            options["row"].add(wine.row)
         options = {k: sorted(v) for k, v in options.items()}
         return options
 
@@ -125,9 +125,9 @@ def generate_old_and_in_window_wines(all_wine: list) -> tuple:
     in_window_wines = []
     for wine in all_wine:
         try:
-            if current_year > int(details['window_end):
+            if current_year > int(wine.window_end):
                 old_wines.append(wine)
-            if current_year >= int(details['window_start) and current_year < int(
+            if current_year >= int(wine.window_start) and current_year < int(
                 wine.window_end
             ):
                 in_window_wines.append(wine)
