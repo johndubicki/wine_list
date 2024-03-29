@@ -63,7 +63,16 @@ def create_app():
             tags = []
             for k, v in details.items():
                 setattr(wine, k, v)
-                tags.append(v)
+                # tags.append(v)
+            tags.append(details['vintage'])
+            tags.append(details['category'].lower())
+            tags.append(details['size'].lower())
+            tags.extend(make_list(details['varietal']))
+            tags.extend(make_list(details['country']))
+            tags.extend(make_list(details['region']))
+            tags.extend(make_list(details['subregion']))
+            tags.extend(make_list(details['producer']))
+            tags.extend(make_list(details['name']))
             wine.tags = json.dumps(tags)
         if request.method == "DELETE" and id:
             wine = Wine.query.filter_by(id=int(id)).delete()
