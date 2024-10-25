@@ -28,6 +28,9 @@ def create_app():
             all_wine = Wine.query.all()
             try:
                 all_wine = sorted(all_wine, key=lambda x: x.producer)
+                total_bottles = 0
+                for wine in all_wine:
+                    total_bottles += int(wine.quantity)
             except TypeError:
                 pass
             old_wine, in_window_wine = generate_old_and_in_window_wines(all_wine)
@@ -36,15 +39,13 @@ def create_app():
                 wines=all_wine,
                 old_wine=old_wine,
                 in_window_wine=in_window_wine,
+                total_bottles=total_bottles
             )
         if request.method == "POST":
             details = request.get_json()
             new_wine = Wine()
-            # tags = []
             for k, v in details.items():
                 setattr(new_wine, k, v)
-            #     tags.append(v)
-            # new_wine.tags = json.dumps(tags)
             tags = []
             tags.append(details['vintage'])
             tags.append(details['category'].lower())
@@ -63,7 +64,6 @@ def create_app():
             tags = []
             for k, v in details.items():
                 setattr(wine, k, v)
-                # tags.append(v)
             tags.append(details['vintage'])
             tags.append(details['category'].lower())
             tags.append(details['size'].lower())
@@ -101,7 +101,6 @@ def create_app():
             ]
         response = jsonify(status="success", data=matching_wine)
         response.headers.add("Access-Control-Allow-Origin", "*")
-        print(response.headers)
         return response
 
     @app.route("/options", methods=["GET"])
